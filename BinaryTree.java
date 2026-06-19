@@ -60,6 +60,74 @@ import java.util.*;
         preorder(root.left);
         preorder(root.right);
     }
+    void levelorder(Node root){
+        if (root==null){
+            System.err.println("Tree empty");
+            return;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            Node temp = queue.poll();
+            System.out.print(temp.data+ " ");
+            if(temp.left!=null){
+                queue.add(temp.left);
+            }
+            if(temp.right!=null){
+                queue.add(temp.right);
+            }
+        }
+    }
+    void deleteNode(int Key){
+        if(root.left==null && root.right==null){
+            if(root.data==Key){
+                root = null;
+                return;
+            }
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        Node temp = null;
+        Node keyNode = null;
+        while(!queue.isEmpty()){
+            temp = queue.poll();
+            if(temp.data==Key){
+                keyNode = temp;
+            }
+            if(temp.left!=null){
+                queue.add(temp.left);
+            }
+            if(temp.right!=null){
+                queue.add(temp.right);
+            }
+        }
+        if(keyNode!=null){
+            keyNode.data = temp.data;
+            deleteLeafNode(temp);
+        }
+    }
+    void deleteLeafNode(Node node){
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            Node temp = queue.poll();
+            if(temp.left==node){
+                temp.left = null;
+                return;
+            }
+            if(temp.right==node){
+                temp.right = null;
+                return;
+            }
+            if(temp.left!=null){
+                queue.add(temp.left);
+            }
+            if(temp.right!=null){
+                queue.add(temp.right);
+            }
+        }
+
+    }
     public static void main(String[] args) {
         BinaryTree tree = new BinaryTree();
         tree.insert(1);
@@ -73,5 +141,7 @@ import java.util.*;
         tree.postorder(root);
         System.out.println("\nPreorder Traversal:");
         tree.preorder(root);
+        System.out.println("\nLevel Order Traversal");
+        tree.levelorder(root);
     }
 }
